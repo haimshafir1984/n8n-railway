@@ -3,7 +3,8 @@
     "env": {}
   },
   "deploy": {
-    "startCommand": "n8n start --tunnel --allow-cors",
+    "startCommand": "n8n start --tunnel --port=5678 --allow-cors",
     "healthcheckPath": "/"
   }
 }
+
