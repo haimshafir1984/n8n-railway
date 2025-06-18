@@ -1,9 +1,9 @@
 {
   "build": {
-    "env": {}
+    "builder": "dockerfile"
   },
   "deploy": {
-    "startCommand": "n8n start --allow-cors",
-    
+    "startCommand": "n8n start --allow-cors"
   }
 }
+
