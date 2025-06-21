@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>יצירת משימה</title>
+</head>
+<body dir="rtl">
+  <h1>טופס יצירת משימה</h1>
+  <form id="taskForm">
+    <label>שם משימה:<br>
+      <input type="text" name="name" required>
+    </label><br><br>
+
+    <label>תאריך התחלה:<br>
+      <input type="date" name="startDate" required>
+    </label><br><br>
+
+    <label>משך (בימים):<br>
+      <input type="number" name="duration" required>
+    </label><br><br>
+
+    <label>תקציב משוער:<br>
+      <input type="number" name="budget" required>
+    </label><br><br>
+
+    <label>שם אחראי:<br>
+      <input type="text" name="owner" required>
+    </label><br><br>
+
+    <label>טלפון של אחראי:<br>
+      <input type="tel" name="phone" required>
+    </label><br><br>
+
+    <button type="submit">שלח משימה</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script>
+    document.getElementById('taskForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        startDate: form.startDate.value,
+        duration: form.duration.value,
+        budget: form.budget.value,
+        owner: form.owner.value,
+        phone: form.phone.value
+      };
+
+      const status = document.getElementById('status');
+      status.textContent = 'שולח...';
+
+      try {
+        const res = await fetch("https://n8ntest-production-f563.up.railway.app/webhook/test-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+          status.textContent = "המשימה נשלחה בהצלחה!";
+          form.reset();
+        } else {
+          status.textContent = "שגיאה בשליחה: " + res.status;
+        }
+      } catch (err) {
+        status.textContent = "שגיאת רשת: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
