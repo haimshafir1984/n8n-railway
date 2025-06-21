@@ -1,56 +1,35 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-  <meta charset="UTF-8" />
-  <title>טופס יצירת משימה</title>
+  <meta charset="UTF-8">
+  <title>טופס משימה</title>
 </head>
 <body>
-  <h2>יצירת משימה חדשה</h2>
+  <h2>הכנס פרטי משימה</h2>
   <form id="taskForm">
     <label>שם משימה: <input type="text" name="taskName" required></label><br>
     <label>תאריך התחלה: <input type="date" name="startDate" required></label><br>
-    <label>זמן מוערך (בימים): <input type="number" name="estimatedDays" required></label><br>
+    <label>זמן מוערך (ימים): <input type="number" name="estimatedTime" required></label><br>
     <label>תקציב משוער: <input type="number" name="budget" required></label><br>
-    <label>שם אחראי משימה: <input type="text" name="ownerName" required></label><br>
-    <label>טלפון של האחראי: <input type="tel" name="phone" required></label><br><br>
+    <label>שם אחראי משימה: <input type="text" name="owner" required></label><br>
+    <label>טלפון אחראי: <input type="tel" name="phone" required></label><br>
     <button type="submit">שלח</button>
   </form>
 
-  <p id="statusMsg"></p>
+  <p id="status"></p>
 
   <script>
-    const form = document.getElementById("taskForm");
-    form.addEventListener("submit", async function (e) {
+    document.getElementById("taskForm").addEventListener("submit", async function(e) {
       e.preventDefault();
 
-      const data = {
-        taskName: form.taskName.value,
-        startDate: form.startDate.value,
-        estimatedDays: form.estimatedDays.value,
-        budget: form.budget.value,
-        ownerName: form.ownerName.value,
-        phone: form.phone.value
-      };
-
-      const webhookUrl = "https://lqjszufqvdxfcvibsncwtoc.hooks.n8n.cloud/webhook/b37b0a0e-7d51-4d38-95e5-94dd48a1e129";
+      const formData = new FormData(e.target);
+      const query = new URLSearchParams(formData).toString();
 
       try {
-        const res = await fetch(webhookUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
-
-        if (res.ok) {
-          document.getElementById("statusMsg").textContent = "המשימה נשלחה בהצלחה!";
-          form.reset();
-        } else {
-          document.getElementById("statusMsg").textContent = "שגיאה בשליחה ל־n8n";
-        }
+        const response = await fetch("https://1t2lpf18tra3u8b46givypcl.hooks.n8n.cloud/webhook/247e392d-8284-4913-abc2-1d19030d0b83?" + query);
+        document.getElementById("status").textContent = response.ok ? "נשלח בהצלחה!" : "אירעה שגיאה בשליחה.";
       } catch (error) {
-        document.getElementById("statusMsg").textContent = "שגיאה ברשת או ב־Webhook";
+        document.getElementById("status").textContent = "שגיאת רשת: " + error.message;
       }
     });
   </script>
