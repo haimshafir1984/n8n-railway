@@ -6,7 +6,7 @@
 </head>
 <body>
   <h2>הכנס פרטי משימה</h2>
-  <form id="taskForm">
+  <form action="https://wlnk7rm0oqbpqgr8l4c2tiwj.hooks.n8n.cloud/webhook/468ceb7d-da5b-4f55-b65e-1cb13fee715a" method="GET">
     <label>שם משימה: <input type="text" name="taskName" required></label><br>
     <label>תאריך התחלה: <input type="date" name="startDate" required></label><br>
     <label>זמן מוערך (ימים): <input type="number" name="estimatedTime" required></label><br>
@@ -15,23 +15,5 @@
     <label>טלפון אחראי: <input type="tel" name="phone" required></label><br>
     <button type="submit">שלח</button>
   </form>
-
-  <p id="status"></p>
-
-  <script>
-    document.getElementById("taskForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-
-      const formData = new FormData(e.target);
-      const query = new URLSearchParams(formData).toString();
-
-      try {
-        const response = await fetch("https://n8ntest-production-f563.up.railway.app/webhook-test/4dcec204-04d1-4caa-82bf-eeaf9aac406e?" + query);
-        document.getElementById("status").textContent = response.ok ? "נשלח בהצלחה!" : "אירעה שגיאה בשליחה.";
-      } catch (error) {
-        document.getElementById("status").textContent = "שגיאת רשת: " + error.message;
-      }
-    });
-  </script>
 </body>
 </html>
